@@ -73,6 +73,7 @@ func TestDaoBranchSpe(t *testing.T) {
 	log.Info("\"21390808875e3972b5fb30ef533f7595\":\"" + genOwners + "\",")
 	log.Info("\"240e2e99283e50af1f153a929e3d1116\":\"" + genReadme + "\",")
 	log.Info("结束")
+
 }
 
 func getUuid() string {

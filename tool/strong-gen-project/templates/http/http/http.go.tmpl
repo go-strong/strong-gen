@@ -24,6 +24,11 @@ func Init(s *service.Service) {
 		log.Error("engine.Start error(%v)", err)
 		panic(err)
 	}
+	fmt.Println("curl http://localhost:8000/{{.Name}}/start")
+	fmt.Println("curl http://localhost:8000/{{.Name}}/metadata")
+	fmt.Println("curl http://localhost:8000/{{.Name}}/metrics")
+	fmt.Println("curl http://localhost:8000/{{.Name}}/ping")
+	fmt.Println("curl http://localhost:8000/{{.Name}}/debug/pprof/")
 }
 
 // initRouter init outer router api path.
