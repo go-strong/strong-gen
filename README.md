@@ -12,11 +12,9 @@ cd /e/Dream/Plan2021_blockgo/src
 
 strong new haha
 
-cd haha
+$ cd haha/cmd/
 
 go mod tidy
-
-cd cmd
 
 go run main.go -conf saga-admin-test.toml 
 
