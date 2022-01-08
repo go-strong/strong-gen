@@ -31,11 +31,6 @@ var (
 		panic(err)
 	}
 	%s`
-	print = `Generation success!                                            
-                          莫生气
-                       代码辣鸡非我意,
-                       自己动手分田地;
-                       你若气死谁如意?
-                       谈笑风生活长命.
-// Release 1.2.3. Powered by Strong`
+	print = `Generation success!
+// Release 1.0.0. Powered by Strong`
 )

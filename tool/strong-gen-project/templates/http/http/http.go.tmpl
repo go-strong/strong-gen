@@ -1,9 +1,9 @@
 package http
 
 import (
+	"fmt"
 	"{{.Name}}/model"
 	"net/http"
-	"fmt"
 
 	"github.com/huangbosbos/go-hutool/log"
 	bm "github.com/huangbosbos/go-hutool/net/http/blademaster"
@@ -26,10 +26,10 @@ func Init(s *service.Service) {
 		panic(err)
 	}
 	fmt.Println("curl http://localhost:8000/{{.Name}}/start")
-	fmt.Println("curl http://localhost:8000/{{.Name}}/metadata")
-	fmt.Println("curl http://localhost:8000/{{.Name}}/metrics")
-	fmt.Println("curl http://localhost:8000/{{.Name}}/ping")
-	fmt.Println("curl http://localhost:8000/{{.Name}}/debug/pprof/")
+	fmt.Println("curl http://localhost:8000/metadata")
+	fmt.Println("curl http://localhost:8000/metrics")
+	fmt.Println("curl http://localhost:8000/ping")
+	fmt.Println("curl http://localhost:8000/debug/pprof/")
 }
 
 // initRouter init outer router api path.
