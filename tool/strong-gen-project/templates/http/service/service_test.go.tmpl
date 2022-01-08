@@ -1,0 +1,34 @@
+package service
+
+import (
+	"flag"
+	"os"
+	"testing"
+
+	"go-saga-gen/conf"
+)
+
+var (
+	srv *Service
+)
+
+func TestMain(m *testing.M) {
+	var err error
+	flag.Set("conf", "../cmd/saga-admin-test.toml")
+	if err = conf.Init(); err != nil {
+		panic(err)
+	}
+
+	srv = New()
+	os.Exit(m.Run())
+}
+
+// TestInsertDB ...
+func TestInsertDB(t *testing.T) {
+
+}
+
+// TestResolveDes ...
+func TestResolveDes(t *testing.T) {
+
+}

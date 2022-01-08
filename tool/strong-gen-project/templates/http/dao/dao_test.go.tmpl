@@ -1,0 +1,24 @@
+package dao
+
+import (
+	"flag"
+	"os"
+	"testing"
+
+	"go-saga-gen/conf"
+)
+
+var (
+	d *Dao
+)
+
+func TestMain(m *testing.M) {
+	flag.Set("conf", "../cmd/saga-admin-test.toml")
+	flag.Parse()
+	if err := conf.Init(); err != nil {
+		panic(err)
+	}
+	d = New()
+	defer d.Close()
+	os.Exit(m.Run())
+}

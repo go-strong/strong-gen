@@ -1,0 +1,37 @@
+package service
+
+import (
+	"context"
+	"github.com/robfig/cron/v3"
+	"go-saga-gen/dao"
+)
+
+// Service struct
+type Service struct {
+	dao  *dao.Dao
+	cron *cron.Cron
+}
+
+// New a DirService and return.
+func New() (s *Service) {
+	s = &Service{
+		dao:  dao.New(),
+		cron: cron.New(),
+	}
+	s.cron.Start()
+	return
+}
+
+// Ping check dao health.
+func (s *Service) Ping(c context.Context) (err error) {
+	return s.dao.Ping(c)
+}
+
+// Wait wait all closed.
+func (s *Service) Wait() {
+}
+
+// Close close all dao.
+func (s *Service) Close() {
+	s.dao.Close()
+}

@@ -1,0 +1,50 @@
+package http
+
+import (
+	"go-saga-gen/model"
+	"net/http"
+
+	"github.com/huangbosbos/go-hutool/log"
+	bm "github.com/huangbosbos/go-hutool/net/http/blademaster"
+	"go-saga-gen/conf"
+	"go-saga-gen/service"
+)
+
+var (
+	srv *service.Service
+)
+
+// Init init
+func Init(s *service.Service) {
+	srv = s
+	engine := bm.DefaultServer(conf.Conf.BM)
+	engine.Ping(ping)
+	initRouter(engine)
+	if err := engine.Start(); err != nil {
+		log.Error("engine.Start error(%v)", err)
+		panic(err)
+	}
+}
+
+// initRouter init outer router api path.
+func initRouter(e *bm.Engine) {
+	g := e.Group("/go-saga-gen")
+	{
+		g.GET("/start", howToStart)
+	}
+}
+
+// example for http request handler.
+func howToStart(c *bm.Context) {
+	k := &model.Strong{
+		Hello: "Golang 大法好 !!!",
+	}
+	c.JSON(k, nil)
+}
+
+func ping(c *bm.Context) {
+	if err := srv.Ping(c); err != nil {
+		log.Error("ping error(%v)", err)
+		c.AbortWithStatus(http.StatusServiceUnavailable)
+	}
+}

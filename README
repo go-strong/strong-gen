@@ -1,0 +1,27 @@
+
+
+
+
+
+
+
+git tag -a v1.0.19 -m "临时redis.v1 1.0.19" && git push origin --tags
+
+git tag -a v1.0.18 -m "添加注释 1.0.18" && git push origin --tags
+
+git tag -a v1.0.17 -m "优化间接依赖 1.0.17" && git push origin --tags
+
+
+
+git tag -d v1.0.8
+git push origin --delete v1.0.8
+
+
+私有
+go env -w GOPRIVATE=github.com/huangbosbos
+go get github.com/huangbosbos/go-hutool
+
+
+GONOPROXY=https://goproxy.cn,direct;GOPRIVATE=github.com/huangbosbos;GOPROXY=https://goproxy.cn,direct
+
+$ go mod init github.com/go-strong/strong-gen

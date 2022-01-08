@@ -1,0 +1,69 @@
+version = "1.0.0"
+user = "nobody"
+dir = "./"
+family = "go-saga-gen"
+
+[log]
+    dir = "/data/log/go-saga-gen/"
+
+[bm]
+    addr = "0.0.0.0:8000"
+    maxListen = 10000
+    timeout = "1000s"
+
+[httpClient]
+    dial = "2s"
+    timeout = "10s"
+    keepAlive = "60s"
+    timer = 1000
+    [httpClient.breaker]
+        window  = "10s"
+        sleep   = "2000ms"
+        bucket  = 10
+        ratio   = 0.5
+        request = 100
+
+[orm]
+    dsn = "root:root@tcp(0.0.0.0:3306)/angle_home?timeout=20000ms&readTimeout=20000ms&writeTimeout=20000ms&parseTime=true&loc=Local&charset=utf8,utf8mb4"
+    active = 5
+    idle = 5
+    idleTimeout = "4h"
+
+[memcache]
+    mcRecordExpire = "720h"
+    [memcache.mc]
+        name = "saga-admin"
+        proto = "tcp"
+        addr = "0.0.0.0:11211"
+        idle = 5
+        active = 10
+        dialTimeout = "1s"
+        readTimeout = "1s"
+        writeTimeout = "1s"
+        idleTimeout = "10s"
+
+[redis]
+    active = 100
+    idle = 100
+    idleTimeout = "3s"
+    waitTimeout = "3s"
+    wait = false
+    name = "redis"
+    proto = "tcp"
+    addr = "127.0.0.1:6379"
+    auth = "redis@123"
+    dialTimeout = "1s"
+    readTimeout = "1s"
+    writeTimeout = "1s"
+
+[permit]
+    [permit.Memcache]
+        name = "go-business/auth"
+        proto = "tcp"
+        addr = "0.0.0.0:11232"
+        active = 10
+        idle = 10
+        dialTimeout = "1s"
+        readTimeout = "1s"
+        writeTimeout = "1s"
+        idleTimeout = "80s"
