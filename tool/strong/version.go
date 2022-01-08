@@ -8,7 +8,7 @@ import (
 
 var (
 	// Version is version
-	Version = "v0.0.3"
+	Version = "v0.0.4"
 	// BuildTime is BuildTime
 	BuildTime = "2022/1/08"
 )
