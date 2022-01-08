@@ -4,9 +4,9 @@
 win
 ```
 
-git tag -a v0.0.5 -m "版本 0.0.5" && git push origin --tags
+git tag -a v0.0.7 -m "版本 0.0.7" && git push origin --tags
 
-go get -u github.com/go-strong/strong-gen/tool/strong
+go install github.com/go-strong/strong-gen/tool/strong@v0.0.7
 
 cd /e/Dream/Plan2021_blockgo/src
 
