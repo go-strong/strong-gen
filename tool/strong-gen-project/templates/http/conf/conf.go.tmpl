@@ -7,12 +7,14 @@ import (
 	"github.com/huangbosbos/go-hutool/cache/redis"
 	"github.com/huangbosbos/go-hutool/conf"
 	"github.com/huangbosbos/go-hutool/database/orm"
+	"github.com/huangbosbos/go-hutool/database/sql"
 	"github.com/huangbosbos/go-hutool/log"
 	bm "github.com/huangbosbos/go-hutool/net/http/blademaster"
 	"github.com/huangbosbos/go-hutool/net/http/blademaster/middleware/permit"
 	"github.com/huangbosbos/go-hutool/net/trace"
 	xtime "github.com/huangbosbos/go-hutool/time"
 	"github.com/pkg/errors"
+	"time"
 )
 
 const (
@@ -20,6 +22,7 @@ const (
 )
 
 var (
+	// config
 	confPath string
 	client   *conf.Client
 	// Conf store the global config
@@ -29,15 +32,36 @@ var (
 
 // Config def.
 type Config struct {
-	Tracer     *trace.Config
-	BM         *bm.ServerConfig
+	// httpServer
+	HTTPServer *bm.ServerConfig
+	// httpClinet
 	HTTPClient *bm.ClientConfig
-	Memcache   *Memcache
-	Redis      *redis.Config
-	Log        *log.Config
-	ORM        *orm.Config
-	Permit     *permit.Config2
-	Property   *Property
+	// tracer
+	Tracer *trace.Config
+	// db
+	DB       *DB
+	Memcache *Memcache
+	Redis    *redis.Config
+	Log      *log.Config
+	ORM      *orm.Config
+	Permit   *permit.Config2
+	Property *Property
+}
+
+// DB conf.
+type DB struct {
+	// Creative db
+	Creative *sql.Config
+	Manager  *sql.Config
+	Upcrm    *orm.Config
+}
+
+// Redis conf.
+type Redis struct {
+	Databus *struct {
+		*redis.Config
+		Expire time.Duration
+	}
 }
 
 // Memcache config.
@@ -64,6 +88,7 @@ func Init() (err error) {
 	return
 }
 
+// configCenter .
 func configCenter() (err error) {
 	if client, err = conf.New(); err != nil {
 		panic(err)
@@ -84,6 +109,8 @@ func configCenter() (err error) {
 	}()
 	return
 }
+
+// load .
 func load() (err error) {
 	var (
 		s       string
@@ -103,7 +130,6 @@ func load() (err error) {
 }
 
 func parseTeamInfo(c *Config) *Config {
-
 	return c
 }
 

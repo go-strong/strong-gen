@@ -24,8 +24,9 @@ func TestDaoBranchSpe(t *testing.T) {
 	genServiceService := fileHexGzip("service/service.go.tmpl")
 	genServiceTest := fileHexGzip("service/service_test.go.tmpl")
 	genGitignore := fileHexGzip(".gitignore.tmpl")
-	genChangelog := fileHexGzip("CHANGELOG.md")
 	genGoMod := fileHexGzip("go.mod.tmpl")
+	genGoSum := fileHexGzip("go.sum.tmpl")
+	genChangelog := fileHexGzip("CHANGELOG.md")
 	genOwners := fileHexGzip("OWNERS")
 	genReadme := fileHexGzip("README.md")
 
@@ -41,6 +42,7 @@ func TestDaoBranchSpe(t *testing.T) {
 	m["17e45e0f3497be1d7b615abf452cafa3"] = genServiceTest
 	m["1a41024e60169dfd892e57d36264a7e3"] = genChangelog
 	m["1dc54a258d1b22873bd8a065ef5f5136"] = genGoMod
+	m["2db2998574594dab822b64f6c78b099d"] = genGoSum
 	m["21390808875e3972b5fb30ef533f7595"] = genOwners
 	m["240e2e99283e50af1f153a929e3d1116"] = genReadme
 	m["f3a4d5b93f5048c5871bff2641d2db8b"] = genGitignore
@@ -125,11 +127,11 @@ func getUuid() string {
 	//fmt.Println("n=-1: ", len(strings.Replace(str, "-", "", -1)))
 	return strings.Replace(str, "-", "", -1)
 }
+
 func TestUID(t *testing.T) {
-
 	fmt.Println(getUuid())
-
 }
+
 func writeFile(fileName string, content string) {
 	f, err := os.OpenFile(fileName, os.O_WRONLY|os.O_TRUNC, 0600)
 	defer f.Close()
