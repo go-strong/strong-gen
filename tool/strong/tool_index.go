@@ -10,7 +10,7 @@ var toolIndexs = []*Tool{
 		Install:   "go get -u github.com/go-strong/strong-gen/tool/strong@" + Version,
 		Summary:   "Strong工具集本体",
 		Platform:  []string{"darwin", "linux", "windows"},
-		Author:    "strong",
+		Author:    "lucky",
 		Hidden:    true,
 	},
 	//{
@@ -20,7 +20,7 @@ var toolIndexs = []*Tool{
 	//	Install:   "go get -u github.com/go-strong/strong-gen/tool/strong-protoc@" + Version,
 	//	Summary:   "快速方便生成pb.go的protoc封装，windows、Linux请先安装protoc工具",
 	//	Platform:  []string{"darwin", "linux", "windows"},
-	//	Author:    "strong",
+	//	Author:    "lucky",
 	//},
 	{
 		Name:      "genbts",
@@ -29,7 +29,7 @@ var toolIndexs = []*Tool{
 		Install:   "go get -u github.com/go-strong/strong-gen/tool/strong-gen-bts@" + Version,
 		Summary:   "缓存回源逻辑代码生成器",
 		Platform:  []string{"darwin", "linux", "windows"},
-		Author:    "strong",
+		Author:    "lucky",
 	},
 	{
 		Name:      "genmc",
@@ -38,7 +38,7 @@ var toolIndexs = []*Tool{
 		Install:   "go get -u github.com/go-strong/strong-gen/tool/strong-gen-mc@" + Version,
 		Summary:   "mc缓存代码生成",
 		Platform:  []string{"darwin", "linux", "windows"},
-		Author:    "strong",
+		Author:    "lucky",
 	},
 	{
 		Name:         "genproject",
@@ -56,7 +56,7 @@ var toolIndexs = []*Tool{
 		Install:   "go get -u github.com/go-strong/strong-gen/tool/testgen@" + Version,
 		Summary:   "测试代码生成",
 		Platform:  []string{"darwin", "linux", "windows"},
-		Author:    "strong",
+		Author:    "lucky",
 	},
 	{
 		Name:      "testcli",
@@ -65,7 +65,7 @@ var toolIndexs = []*Tool{
 		Install:   "go get -u github.com/go-strong/strong-gen/tool/testcli@" + Version,
 		Summary:   "测试代码运行",
 		Platform:  []string{"darwin", "linux", "windows"},
-		Author:    "strong",
+		Author:    "lucky",
 	},
 	//  third party
 	{
@@ -83,6 +83,6 @@ var toolIndexs = []*Tool{
 		Install:   "go get -u github.com/go-swagger/go-swagger/cmd/swagger",
 		Summary:   "swagger api文档",
 		Platform:  []string{"darwin", "linux", "windows"},
-		Author:    "goswagger.io",
+		Author:    "luckyger.io",
 	},
 }
