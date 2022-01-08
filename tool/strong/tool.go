@@ -43,7 +43,7 @@ func toolAction(c *cli.Context) (err error) {
 			if t.Hidden {
 				continue
 			}
-			updateTime := t.BuildTime.Format("2006/01/02")
+			updateTime := t.BuildTime.Format("2022/01/08")
 			fmt.Printf("%s%s: %s Author(%s) [%s]\n", color.HiMagentaString(t.Name), getNotice(t), color.HiCyanString(t.Summary), t.Author, updateTime)
 		}
 		fmt.Println("\n安装工具: strong tool install demo")
@@ -206,14 +206,16 @@ func (t Tool) supportOS() bool {
 
 func (t Tool) install() {
 	if t.Install == "" {
-		fmt.Fprintf(os.Stderr, color.RedString("%s: 自动安装失败详情请查看文档：%s\n", t.Name, toolDoc))
+		//fmt.Fprintf(os.Stderr, color.RedString("%s: 自动安装失败详情请查看文档：%s\n", t.Name, toolDoc))
+		fmt.Fprintf(os.Stderr, color.RedString("%s: For details of automatic installation failure, please refer to the documentation：%s\n", t.Name, toolDoc))
 		return
 	}
 	fmt.Println(t.Install)
 	cmds := strings.Split(t.Install, " ")
 	if len(cmds) > 0 {
 		if err := runTool(t.Name, path.Dir(t.toolPath()), cmds[0], cmds[1:]); err == nil {
-			color.Green("%s: 安装成功!", t.Name)
+			//color.Green("%s: 安装成功!", t.Name)
+			color.Green("%s: successful installation!", t.Name)
 		}
 	}
 }
