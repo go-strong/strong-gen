@@ -2,13 +2,13 @@
 
 win
 ```
-go get -u github.com/go-strong/strong/tool/strong
+go get -u github.com/go-strong/strong-gen/tool/strong
 
-go get -u github.com/go-strong/strong/tool/strong-gen-project
+go get -u github.com/go-strong/strong-gen/tool/strong-gen-project
 
-go get -u github.com/go-strong/strong/tool/strong-protoc
+go get -u github.com/go-strong/strong-gen/tool/strong-protoc
 
-go get -u github.com/go-strong/strong/tool/strong-gen-bts
+go get -u github.com/go-strong/strong-gen/tool/strong-gen-bts
 
 go get -u github.com/golang/protobuf@v1.3.5
 

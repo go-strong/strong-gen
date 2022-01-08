@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	_ "github.com/go-strong/strong-gen/tool/strong-gen-project/packrd"
+	_ "github.com/go-strong/strong-gen-gen/tool/strong-gen-project/packrd"
 	"github.com/gobuffalo/packr/v2"
 	"github.com/urfave/cli/v2"
 	"io/ioutil"
