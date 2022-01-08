@@ -4,12 +4,9 @@
 
 
 
+git tag -a v0.0.1 -m "版本 0.0.1" && git push origin --tags
 
-git tag -a v1.0.19 -m "临时redis.v1 1.0.19" && git push origin --tags
 
-git tag -a v1.0.18 -m "添加注释 1.0.18" && git push origin --tags
-
-git tag -a v1.0.17 -m "优化间接依赖 1.0.17" && git push origin --tags
 
 
 
