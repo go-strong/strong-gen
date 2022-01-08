@@ -4,7 +4,7 @@
 
 
 
-git tag -a v0.0.7 -m "版本 0.0.7" && git push origin --tags
+git tag -a v0.0.8 -m "版本 0.0.8" && git push origin --tags
 
 
 

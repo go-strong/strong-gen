@@ -15,10 +15,7 @@
 
 win
 ```
-
-git tag -a v0.0.7 -m "版本 0.0.7" && git push origin --tags
-
-go install github.com/go-strong/strong-gen/tool/strong@v0.0.7
+go install github.com/go-strong/strong-gen/tool/strong@v0.0.8
 
 cd /e/Dream/Plan2021_blockgo/src
 
