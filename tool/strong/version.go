@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	// Version is version
+	// TODO Version is version
 	Version = "v0.0.5"
 	// BuildTime is BuildTime
 	BuildTime = "2022/1/08"
