@@ -12,6 +12,15 @@ import (
 	"time"
 )
 
+//go:generate strong tool genbts
+// MyDao dao interface
+type MyDao interface {
+	Close()
+	Ping(ctx context.Context) (err error)
+	// bts: -nullcache=&model.Article{ID:-1} -check_null_code=$!=nil&&$.ID==-1
+	Article(c context.Context, id int64) (*model.Article, error)
+}
+
 // Dao def
 type Dao struct {
 	c              *conf.Config
