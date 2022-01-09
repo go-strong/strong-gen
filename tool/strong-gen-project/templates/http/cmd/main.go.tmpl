@@ -55,7 +55,7 @@ func main() {
 	signalHandler()
 }
 
-// signalHandler –≈∫≈
+// signalHandler
 func signalHandler() {
 	// init signal
 	c := make(chan os.Signal, 1)
@@ -80,6 +80,6 @@ func signalHandler() {
 }
 
 func init() {
-	os.Setenv("HTTP_PERF", "close") //πÿ±’º‡øÿ
-	// ideaÃÌº”√¸¡Ó£®Program arguments£©:  -conf ./cmd/saga-admin-test.toml
+	os.Setenv("HTTP_PERF", "close") //close http perf
+	// idea add Program arguments:  -conf ./cmd/saga-admin-test.toml
 }

@@ -1,8 +1,8 @@
-	b.SetResolver("dao/business.go.tmpl", packr.Pointer{ForwardBox: gk, ForwardPath: "a893bbdc5e8b4a89b6de26f8e4523a40"})
-	b.SetResolver("dao/business_test.go.tmpl", packr.Pointer{ForwardBox: gk, ForwardPath: "9738f20ce1ec45b984af5f7b11d6853e"})
-	b.SetResolver("dao/db_project.go.tmpl", packr.Pointer{ForwardBox: gk, ForwardPath: "414b5c01cfc242e29a23deac0d866bd5"})
-	b.SetResolver("dao/db_project_test.go.tmpl", packr.Pointer{ForwardBox: gk, ForwardPath: "39e7595b0d324b89968d542f72386908"})
-	b.SetResolver("dao/mc.go.tmpl", packr.Pointer{ForwardBox: gk, ForwardPath: "8dd41504fc224ca2a4fc52fedc37cb81"})
-	b.SetResolver("dao/mc_test.go.tmpl", packr.Pointer{ForwardBox: gk, ForwardPath: "eccd21683c9c4b6e8648af2317d1ba59"})
-	b.SetResolver("dao/redis.go.tmpl", packr.Pointer{ForwardBox: gk, ForwardPath: "8d4fad2f0e5c4e1389db2f84577407b8"})
-	b.SetResolver("dao/redis_test.go.tmpl", packr.Pointer{ForwardBox: gk, ForwardPath: "a209b29b1ebd488083c064b49eb68ab5"})
+# Owner
+lucky
+
+# Author
+lucky
+
+# Reviewer
+lucky
