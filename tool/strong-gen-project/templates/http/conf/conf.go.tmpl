@@ -6,12 +6,14 @@ import (
 	"github.com/huangbosbos/go-hutool/cache/memcache"
 	"github.com/huangbosbos/go-hutool/cache/redis"
 	"github.com/huangbosbos/go-hutool/conf"
+	//"github.com/huangbosbos/go-hutool/database/elastic"
 	"github.com/huangbosbos/go-hutool/database/orm"
 	"github.com/huangbosbos/go-hutool/database/sql"
+	ecode "github.com/huangbosbos/go-hutool/ecode/tip"
 	"github.com/huangbosbos/go-hutool/log"
 	bm "github.com/huangbosbos/go-hutool/net/http/blademaster"
 	"github.com/huangbosbos/go-hutool/net/http/blademaster/middleware/permit"
-	"github.com/huangbosbos/go-hutool/net/trace"
+	//"github.com/huangbosbos/go-hutool/net/trace"
 	xtime "github.com/huangbosbos/go-hutool/time"
 	"github.com/pkg/errors"
 	"time"
@@ -32,20 +34,37 @@ var (
 
 // Config def.
 type Config struct {
-	// httpServer
-	HTTPServer *bm.ServerConfig
-	// httpClinet
-	HTTPClient *bm.ClientConfig
-	// tracer
-	Tracer *trace.Config
-	// db
+	// Env
+	Env string
+
+	HTTPServer *bm.ServerConfig // httpServer
+	HTTPClient *bm.ClientConfig // httpClient
+	Ecode      *ecode.Config    // eCode
+
 	DB       *DB
 	Memcache *Memcache
 	Redis    *redis.Config
-	Log      *log.Config
 	ORM      *orm.Config
+	MySQL    *sql.Config
+	Log      *log.Config
+
+	/*业务拓展需要使用*/
 	Permit   *permit.Config2
 	Property *Property
+	Wechat   *wechat
+
+	/*内部拓展需要使用*/
+	//Tracer   *trace.Config // tracer 链路追踪 待研究
+	//Mail      *Mail
+	//Scheduler *Scheduler
+	//Auth      *permit.Config // auto 权限
+	//ES        *elastic.Config
+}
+
+type wechat struct {
+	Token    string
+	Secret   string
+	Username string
 }
 
 // DB conf.
@@ -68,6 +87,25 @@ type Redis struct {
 type Memcache struct {
 	MC             *memcache.Config
 	MCRecordExpire xtime.Duration
+}
+
+// Scheduler scheduler
+type Scheduler struct {
+	BatchRunEnableVersion   string
+	BatchRunUpdateTapdBug   string
+	DisableBatchRunOverTime string
+	BatchRunOverHourTime    int
+	SyncWechatContact       string
+	Active                  bool
+}
+
+// Mail mail
+type Mail struct {
+	Host        string
+	Port        int
+	Username    string
+	Password    string
+	NoticeOwner []string
 }
 
 func init() {
@@ -135,4 +173,10 @@ func parseTeamInfo(c *Config) *Config {
 
 // Property config for biz logic. 业务逻辑的属性配置
 type Property struct {
+	DefaultProject *struct {
+		ProjectIDs []int
+		Status     []string
+		Types      []int
+	}
+	// Demo *struct {} 在conf.toml文件添加配置
 }

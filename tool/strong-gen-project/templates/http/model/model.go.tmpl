@@ -10,3 +10,54 @@ type Article struct {
 	Content string
 	Author  string
 }
+// ÍØÕ¹²Î¿¼
+
+// RequireVisibleUser def
+type RequireVisibleUser struct {
+	UserName string
+	NickName string
+}
+
+// ContactInfo def
+type ContactInfo struct {
+	ID          string `json:"id,omitempty" gorm:"column:id"`
+	UserName    string `json:"english_name" gorm:"column:user_name"`
+	UserID      string `json:"userid" gorm:"column:user_id"`
+	NickName    string `json:"name" gorm:"column:nick_name"`
+	VisibleSaga bool   `json:"visible_saga" gorm:"column:visible_saga"`
+}
+
+// TeamDataResp ...
+type TeamDataResp struct {
+	Department string          `json:"department"`
+	Business   string          `json:"business"`
+	QueryDes   string          `json:"query_description"`
+	Total      int             `json:"total"`
+	Data       []*DataWithTime `json:"data_info"`
+}
+
+// DataWithTime ...
+type DataWithTime struct {
+	TotalItem int    `json:"total_item"`
+	StartTime string `json:"start_time"`
+	EndTime   string `json:"end_time"`
+}
+
+// PipelineDataTime ...
+type PipelineDataTime struct {
+	TotalItem   int    `json:"total_item"`
+	SuccessItem int    `json:"success_item"`
+	StartTime   string `json:"start_time"`
+	EndTime     string `json:"end_time"`
+}
+
+// PipelineDataResp ...
+type PipelineDataResp struct {
+	Department   string              `json:"department"`
+	Business     string              `json:"business"`
+	QueryDes     string              `json:"query_description"`
+	Total        int                 `json:"total"`
+	SuccessNum   int                 `json:"success_num"`
+	SuccessScale int                 `json:"success_scale"`
+	Data         []*PipelineDataTime `json:"data_info"`
+}

@@ -2,24 +2,46 @@ package service
 
 import (
 	"context"
+	//"github.com/huangbosbos/go-hutool/log"
 	"github.com/robfig/cron/v3"
+	"{{.Name}}/conf"
 	"{{.Name}}/dao"
+	"sync"
 )
 
 // Service struct
 type Service struct {
-	dao  *dao.Dao
-	cron *cron.Cron
+	//ac   *paladin.Map // application.toml conf
+	c      *conf.Config
+	dao    *dao.Dao
+	cron   *cron.Cron
+	waiter *sync.WaitGroup
+	/*内部业务参数，仅供参考*/
+	userUpMo      int64
+	userNames     map[int64]string // users' name
+	userNicknames map[int64]string // user's nickname
+	userDeps      map[int64]string // users' department
+	userIds       map[string]int64 // users' ids
 }
 
 // New a DirService and return.
-func New() (s *Service) {
+func New(c *conf.Config) (s *Service) {
+	/*var ac = new(paladin.TOML)
+	if err := paladin.Watch("application.toml", ac); err != nil {
+		panic(err)
+	}*/
 	s = &Service{
-		dao:  dao.New(),
-		cron: cron.New(),
+		//ac:   ac,
+		c:      c,
+		dao:    dao.New(c),
+		cron:   cron.New(),
+		waiter: new(sync.WaitGroup),
 	}
 	s.cron.Start()
-	return
+
+	s.waiter.Add(1)
+	go s.checkUserCanalConsumeProc()
+	return s
 }
 
 // Ping check dao health.
@@ -29,9 +51,29 @@ func (s *Service) Ping(c context.Context) (err error) {
 
 // Wait wait all closed.
 func (s *Service) Wait() {
+	s.waiter.Wait()
 }
 
 // Close close all dao.
 func (s *Service) Close() {
 	s.dao.Close()
+}
+
+// checkUserCanalConsumeProc check consumer stat 检查用户进程
+func (s *Service) checkUserCanalConsumeProc() {
+	defer s.waiter.Done()
+	if s.c.Env != "pro" {
+		return
+	}
+	//TODO
+	/*var userMo int64
+	for {
+		time.Sleep(1 * time.Minute)
+		if s.userUpMo-userMo == 0 {
+			msg := "job userCanal did not consume within a minute"
+			//s.dao.SendSMS(msg)
+			log.Warn(msg)
+		}
+		userMo = s.userUpMo
+	}*/
 }

@@ -2,25 +2,28 @@ package http
 
 import (
 	"fmt"
-	"{{.Name}}/model"
-	"net/http"
-
 	"github.com/huangbosbos/go-hutool/log"
 	bm "github.com/huangbosbos/go-hutool/net/http/blademaster"
 	"{{.Name}}/conf"
+	"{{.Name}}/model"
 	"{{.Name}}/service"
+	"net/http"
+	"os"
+
 )
 
 var (
 	//Svc service.
-	srv *service.Service
+	svc *service.Service
 )
 
 // Init init http sever instance.
 func Init(c *conf.Config, s *service.Service) {
-	srv = s
+	svc = s
 	// init inner router
 	engine := bm.DefaultServer(conf.Conf.HTTPServer)
+	//engine := bm.NewServer(c.BM)
+
 	initRouter(engine)
 	// init inner server
 	if err := engine.Start(); err != nil {
@@ -31,19 +34,38 @@ func Init(c *conf.Config, s *service.Service) {
 	fmt.Println("curl http://localhost:8000/metadata")
 	fmt.Println("curl http://localhost:8000/metrics")
 	fmt.Println("curl http://localhost:8000/ping")
-	fmt.Println("curl http://localhost:8000/debug/pprof/")
+	if os.Getenv("HTTP_PERF") == "" {
+		fmt.Println("curl http://localhost:8000/debug/pprof/")
+	}
 }
 
 // initRouter init outer router api path.
 func initRouter(e *bm.Engine) {
-	e.Ping(ping)                 // engine自带的"/ping"接口，用于负载均衡检测服务健康状态
-	g := e.Group("/go-business") // e.Group 创建一组 "/go-business" 起始的路由组
+	e.Ping(ping) // engine自带的"/ping"接口，用于负载均衡检测服务健康状态
+	//e.Register(register)         //用于将元数据导出到发现。
+	g := e.Group("/{{.Name}}") // e.Group 创建一组 "/go-business" 起始的路由组
 	{
-		g.GET("/start", howToStart)  // g.GET 创建一个 "kratos-demo/start" 的路由，使用GET方式请求，默认处理Handler为howToStart方法
-		g.POST("/start", howToStart) // g.POST 创建一个 "kratos-demo/start" 的路由，使用POST方式请求，默认处理Handler为howToStart方法
+		g.GET("/start", howToStart)  // g.GET 创建一个 "strong-demo/start" 的路由，使用GET方式请求，默认处理Handler为howToStart方法
+		g.POST("/start", howToStart) // g.POST 创建一个 "strong-demo/start" 的路由，使用POST方式请求，默认处理Handler为howToStart方法
+		business := g.Group("/business")
+		{
+			business.POST("/add", addBusiness)
+			business.POST("/update", updateBusiness)
+			business.POST("/role/add", addRole)
+			business.POST("/role/update", updateRole)
+			business.POST("/user/add", addUser)
+			business.POST("/user/update", updateUser)
+			business.POST("/state/update", updateState)
+			business.POST("/user/delete", deleteUser)
+			business.GET("/list", businessList)
+			business.GET("/flow/list", flowList)
+			business.GET("/user/list", userList)
+			business.GET("/role/list", roleList)
+			business.GET("/user/role", userRole)
+		}
+
 	}
 }
-
 
 // example for http request handler.
 func howToStart(c *bm.Context) { // handler方法默认传入bm的Context对象
@@ -57,14 +79,17 @@ func howToStart(c *bm.Context) { // handler方法默认传入bm的Context对象
 // engine自带Ping方法，用于设置`/ping`路由的handler，
 // 该路由统一提供于负载均衡服务做健康检测。服务是否健康，可自定义`ping handler`进行逻辑判断，如检测DB是否正常等。
 func ping(c *bm.Context) {
-	if err := srv.Ping(c); err != nil {
+	if err := svc.Ping(c); err != nil {
 		log.Error("ping error(%v)", err)
 		c.AbortWithStatus(http.StatusServiceUnavailable)
 	}
+}
+
+func register(c *bm.Context) {
+	c.JSON(map[string]interface{}{}, nil)
 }
 
 //默认路由有：
 //
 //* /metrics 用于prometheus信息采集
 //* /metadata 可以查看所有注册的路由信息
-

@@ -2,10 +2,10 @@ package service
 
 import (
 	"flag"
+	"fmt"
+	"{{.Name}}/conf"
 	"os"
 	"testing"
-
-	"{{.Name}}/conf"
 )
 
 var (
@@ -18,14 +18,14 @@ func TestMain(m *testing.M) {
 	if err = conf.Init(); err != nil {
 		panic(err)
 	}
-
-	srv = New()
+	srv = New(conf.Conf)
 	os.Exit(m.Run())
 }
 
 // TestInsertDB ...
 func TestInsertDB(t *testing.T) {
-
+	fmt.Println("todo 。。。")
+	fmt.Println("todo 。。。")
 }
 
 // TestResolveDes ...

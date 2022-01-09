@@ -1,0 +1,34 @@
+package model
+
+import (
+	"flag"
+	"github.com/jinzhu/gorm"
+	"{{.Name}}/conf"
+	"os"
+	"path/filepath"
+	"testing"
+)
+
+func TestMain(m *testing.M) {
+	dir, _ := filepath.Abs("../cmd/saga-admin-test.toml")
+	if err := flag.Set("conf", dir); err != nil {
+		panic(err)
+	}
+	flag.Parse()
+	if err := conf.Init(); err != nil {
+		panic(err)
+	}
+	m.Run()
+	os.Exit(0)
+}
+
+func TestCreateAutoMigrate(t *testing.T) {
+	//2. 连接Mysql数据库
+	db, err := gorm.Open("mysql", conf.Conf.ORM.DSN)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	//3. 把模型与数据库中的表对应起来（反向建表）
+	// db.AutoMigrate(BusinessRole{}, BusinessList{})
+}

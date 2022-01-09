@@ -2,51 +2,73 @@ package main
 
 import (
 	"flag"
-	"github.com/huangbosbos/go-hutool/net/trace"
+	ecode "github.com/huangbosbos/go-hutool/ecode/tip"
+	"github.com/huangbosbos/go-hutool/log"
+	//"github.com/huangbosbos/go-hutool/net/trace"
+	"github.com/huangbosbos/go-hutool/os/signal"
 	"github.com/huangbosbos/go-hutool/syscall"
 	"{{.Name}}/conf"
 	"{{.Name}}/http"
 	"{{.Name}}/service"
 	"os"
-	"os/signal"
 	"time"
-
-	"github.com/huangbosbos/go-hutool/log"
 )
 
 const (
 	_durationForClosingServer = 2 // second
 )
 
+var (
+	svc *service.Service
+)
+
+// main $ go run main.go -conf saga-admin-test.toml
 func main() {
 	flag.Parse()
 	if err := conf.Init(); err != nil {
 		log.Error("conf.Init() error(%v)", err)
 		panic(err)
 	}
-	// init log
+
+	// log init
 	log.Init(conf.Conf.Log)
-	trace.Init(conf.Conf.Tracer)
-	defer trace.Close()
 	defer func() {
 		log.Close()
 		// wait for a while to guarantee that all log messages are written
 		time.Sleep(10 * time.Millisecond)
 	}()
+
+	// trace init
+	//trace.Init(conf.Conf.Tracer)
+	//defer trace.Close()
+
+	// eCode init
+	ecode.Init(conf.Conf.Ecode)
+
 	//service init
-	log.Info("{{.Name}} start")
-	svc := service.New()
+	svc = service.New(conf.Conf)
+
+	//http init
 	http.Init(conf.Conf, svc)
+
+	log.Info("{{.Name}} start")
+	signalHandler()
+}
+
+// signalHandler ÐÅºÅ
+func signalHandler() {
 	// init signal
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 	for {
-		s := <-c
-		log.Info("{{.Name}} get a signal %s", s.String())
-		switch s {
+		si := <-c
+		log.Info("{{.Name}} get a signal %s", si.String())
+		switch si {
 		case syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGSTOP, syscall.SIGINT:
+			//time.Sleep(time.Second * 2)
+			log.Info("get a signal %s, stop the go-business process", si.String())
 			svc.Close()
-			log.Info("{{.Name}} exit")
+			svc.Wait()
 			time.Sleep(_durationForClosingServer * time.Second)
 			return
 		case syscall.SIGHUP:
@@ -55,4 +77,9 @@ func main() {
 			return
 		}
 	}
+}
+
+func init() {
+	os.Setenv("HTTP_PERF", "close") //¹Ø±Õ¼à¿Ø
+	// ideaÌí¼ÓÃüÁî£¨Program arguments£©:  -conf ./cmd/saga-admin-test.toml
 }

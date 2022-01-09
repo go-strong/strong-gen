@@ -5,48 +5,97 @@ import (
 	"github.com/huangbosbos/go-hutool/cache/memcache"
 	"github.com/huangbosbos/go-hutool/cache/redis"
 	"github.com/huangbosbos/go-hutool/database/orm"
+	"github.com/huangbosbos/go-hutool/log"
 	bm "github.com/huangbosbos/go-hutool/net/http/blademaster"
+	"github.com/jinzhu/gorm"
 	"{{.Name}}/conf"
 	"time"
-
-	"github.com/jinzhu/gorm"
 )
 
 // Dao def
 type Dao struct {
-	// cache
-	httpClient     *bm.Client
+	c              *conf.Config
 	mysql          *gorm.DB
 	db             *gorm.DB
-	mc             *memcache.Pool
+	httpClient     *bm.Client
 	redis          *redis.Pool
+	mc             *memcache.Pool
+	redisExpire    int32
 	mcRecordExpire int32
+	//es           *elastic.Elastic
 }
 
 // New create instance of Dao
-func New() (d *Dao) {
+func New(c *conf.Config) (d *Dao) {
 	d = &Dao{
-		mc:             memcache.NewPool(conf.Conf.Memcache.MC),
-		httpClient:     bm.NewClient(conf.Conf.HTTPClient),
-		mysql:          orm.NewMySQL(conf.Conf.ORM),
-		db:             orm.NewMySQL(conf.Conf.ORM),
-		redis:          redis.NewPool(conf.Conf.Redis),
-		mcRecordExpire: int32(time.Duration(conf.Conf.Memcache.MCRecordExpire) / time.Second),
+		c:              c,                               // config
+		db:             orm.NewMySQL(c.ORM),             // db
+		mysql:          orm.NewMySQL(c.ORM),             // mysql
+		httpClient:     bm.NewClient(c.HTTPClient),      // httpClient
+		redis:          redis.NewPool(c.Redis),          // redis
+		mc:             memcache.NewPool(c.Memcache.MC), // memcache
+		mcRecordExpire: int32(time.Duration(c.Memcache.MCRecordExpire) / time.Second),
+		/*������չ*/
+		//es: elastic.NewElastic(conf.Conf.ES),
+	}
+	d.initORM()
+	return
+}
+
+// 	initORM sql��־����
+func (d *Dao) initORM() {
+	d.db.LogMode(true)
+}
+
+// DB .
+func (d *Dao) DB() *gorm.DB {
+	return d.db
+}
+
+// Ping the resource. check connection of db , mc.
+func (d *Dao) Ping(c context.Context) (err error) {
+	// TODO: add db,mc,redis... if you use
+	if err = d.pingRedis(c); err != nil {
+		return
+	}
+	if err = d.pingMC(c); err != nil {
+		return
+	}
+	return d.db.DB().Ping()
+}
+
+func (d *Dao) pingMC(ctx context.Context) (err error) {
+	item := &memcache.Item{
+		Key:   "ping",
+		Value: []byte{1},
+	}
+	conn := d.mc.Get(ctx)
+	err = conn.Set(item)
+	defer conn.Close()
+	if err = conn.Set(&memcache.Item{Key: "ping", Value: []byte("pong"), Expiration: 0}); err != nil {
+		log.Error("conn.Set(PING) error(%v)", err)
 	}
 	return
 }
 
-// Ping dao.
-func (d *Dao) Ping(c context.Context) (err error) {
-	return d.db.DB().Ping()
+func (d *Dao) pingRedis(ctx context.Context) (err error) {
+	conn := d.redis.Get(ctx)
+	defer conn.Close()
+	if _, err = conn.Do("SET", "ping", "pong"); err != nil {
+		log.Error("conn.Set(PING) error(%v)", err)
+	}
+	return
 }
 
-// Close dao.
+// Close dao close the resource. connection of db , mc.
 func (d *Dao) Close() {
-	if d.mc != nil {
-		d.mc.Close()
-	}
 	if d.db != nil {
 		d.db.Close()
+	}
+	if d.redis != nil {
+		d.redis.Close()
+	}
+	if d.mc != nil {
+		d.mc.Close()
 	}
 }

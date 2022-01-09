@@ -3,6 +3,7 @@ package dao
 import (
 	"flag"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"{{.Name}}/conf"
@@ -13,12 +14,25 @@ var (
 )
 
 func TestMain(m *testing.M) {
-	flag.Set("conf", "../cmd/saga-admin-test.toml")
+	if os.Getenv("DEPLOY_ENV") != "" {
+		flag.Set("tree_id", "11038")
+		flag.Set("conf_version", "docker-1")
+		flag.Set("deploy_env", "uat")
+		flag.Set("conf_host", "config.bosscloud.co")
+		flag.Set("conf_path", "/tmp")
+		flag.Set("region", "sh")
+		flag.Set("zone", "sh001")
+	} else {
+		dir, _ := filepath.Abs("../cmd/saga-admin-test.toml")
+		if err := flag.Set("conf", dir); err != nil {
+			panic(err)
+		}
+	}
 	flag.Parse()
 	if err := conf.Init(); err != nil {
 		panic(err)
 	}
-	d = New()
-	defer d.Close()
-	os.Exit(m.Run())
+	d = New(conf.Conf)
+	m.Run()
+	os.Exit(0)
 }
