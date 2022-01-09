@@ -35,14 +35,14 @@ func New(c *conf.Config) (d *Dao) {
 		redis:          redis.NewPool(c.Redis),          // redis
 		mc:             memcache.NewPool(c.Memcache.MC), // memcache
 		mcRecordExpire: int32(time.Duration(c.Memcache.MCRecordExpire) / time.Second),
-		/*������չ*/
+		/*Extended reference*/
 		//es: elastic.NewElastic(conf.Conf.ES),
 	}
 	d.initORM()
 	return
 }
 
-// 	initORM sql��־����
+// 	initORM sql
 func (d *Dao) initORM() {
 	d.db.LogMode(true)
 }
