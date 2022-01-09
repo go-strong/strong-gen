@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"github.com/go-strong/strong-gen/tool/pkg"
 	"github.com/gobuffalo/packr/v2"
 	"github.com/gobuffalo/packr/v2/file/resolver"
 	"github.com/huangbosbos/go-hutool/log"
@@ -12,6 +13,26 @@ import (
 	"strings"
 	"testing"
 )
+
+func TestChina(t *testing.T) {
+	genCn := fileHexGzip("api/http.go.tmpl")
+	fmt.Println("###########==> ", genCn)
+	//文件解密
+	y, err := resolver.UnHexGzipString(genCn)
+	fmt.Println("###########==> ", y)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("------------------------")
+	genCn2 := fileHexGzip("api/main.go.tmpl")
+	fmt.Println("###########==> ", genCn2)
+	//文件解密
+	y2, err := resolver.UnHexGzipString(genCn2)
+	fmt.Println("###########==> ", y2)
+	if err != nil {
+		panic(err)
+	}
+}
 
 func TestDaoBranchSpe(t *testing.T) {
 	createFile()
@@ -135,9 +156,16 @@ func writeFile(fileName string, content string) {
 func fileHexGzip(filename string) string {
 	box := packr.New("myBox", "./templates/http/")
 	//读取文件
-	s, err := box.FindString(filename)
+	str, err := box.FindString(filename)
+
+	isGbk := pkg.IsGBK(str)
+	//fmt.Println(filename+"is GBK coding:", isGbk) //判断是否是gbk
+	//fmt.Println("Is UTF8 coding:", pkg.IsUTF8(str)) //判断是否是utf8
+	if isGbk {
+		str = pkg.ConvertToString(str, "gbk", "utf-8")
+	}
 	//文件压缩
-	x, err := resolver.HexGzipString(s)
+	x, err := resolver.HexGzipString(str)
 	//fmt.Println(x)
 	//文件解密
 	//y, err := resolver.UnHexGzipString(x)
@@ -148,6 +176,7 @@ func fileHexGzip(filename string) string {
 	// fmt.Println(s)
 	return x
 }
+
 func createFile() {
 	log.Init(nil)
 	fmt.Println("Hello, world")
