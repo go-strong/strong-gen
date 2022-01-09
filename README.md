@@ -9,8 +9,6 @@
 
 ![image](https://user-images.githubusercontent.com/17606795/148645471-295d87c1-8363-49b2-ac22-673c87f11ca9.png)
 
-![image](https://user-images.githubusercontent.com/17606795/148645409-f1bc4be0-5a6d-4029-b635-b77e9894be3d.png)
-
 
 
 win
