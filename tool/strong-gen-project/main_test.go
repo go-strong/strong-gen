@@ -184,7 +184,7 @@ func createFile() {
 
 	// check
 	if _, err := os.Stat(path); err == nil {
-		fmt.Println("path exists 1", path)
+		//fmt.Println("path exists 1", path)
 	} else {
 		fmt.Println("path not exists ", path)
 		err := os.MkdirAll(path, 0711)
@@ -197,7 +197,7 @@ func createFile() {
 
 	// check again
 	if _, err := os.Stat(path); err == nil {
-		fmt.Println("path exists 2", path)
+		//fmt.Println("path exists 2", path)
 	}
 
 	_, err := os.Create("./create/test.txt")
