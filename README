@@ -1,5 +1,5 @@
 
-git tag -a v0.0.18 -m "版本 0.0.18" && git push origin --tags
+git tag -a v1.0.0 -m "版本 1.0.0" && git push origin --tags
 
 
 
