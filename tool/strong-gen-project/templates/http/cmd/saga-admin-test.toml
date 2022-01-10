@@ -2,13 +2,13 @@
 
 version = "1.0.0"
 user = "nobody"
-pid = "/tmp/saga-service.pid"
+pid = "/tmp/{{.Name}}-service.pid"
 dir = "./"
-family = "go-saga-gen"
+family = "go-saga-{{.Name}}"
 env = "dev"
 
 [log]
-    dir = "/data/log/go-saga-gen/"
+    dir = "/data/log/go-saga-{{.Name}}/"
 
 # http://host:16686/search
 [tracer]
