@@ -13,7 +13,7 @@
 
 win
 ```
-go install github.com/go-strong/strong-gen/tool/strong@v1.0.0
+go install github.com/go-strong/strong-gen/tool/strong@v1.0.1
 strong tool install all
 
 cd /e/Dream/Plan2021_blockgo/src
